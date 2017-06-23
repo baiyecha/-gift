@@ -45,4 +45,3 @@ for x in xrange(1,int(maxPage[0])):
             AllgiftJson[giftid] = jsonData;
 print AllgiftJson;
 saveFile("douyu.json", AllgiftJson);
-
