@@ -32,6 +32,6 @@ for x in xrange(1,int(maxPage[0])+1):
             oneGiftJson["id"] = array["id"];
             oneGiftJson["name"] = array["name"];
             oneGiftJson["price"] = array["price"];
+            oneGiftJson["iconUrl"] = array["icon"];
             AllgiftJson[array["id"]] = oneGiftJson;
-
 saveFile("zhanqiGift.json", AllgiftJson);

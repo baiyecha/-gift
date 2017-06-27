@@ -25,6 +25,6 @@ for array in allJson["data"]["lists"]:
     giftJson["id"] = array["id"];
     giftJson["name"] = array["name"];
     giftJson["weight"] = array["weight"];
+    giftJson["iconUrl"] = array["pcIconGif"];
     AllgiftJson[array["id"]] = giftJson;
-
 saveFile("quanminGift.json", AllgiftJson);

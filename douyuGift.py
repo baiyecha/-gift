@@ -26,7 +26,7 @@ for x in xrange(1,int(maxPage[0])):
     hrefs = re.search(r'href="(.*?)"',pageHtml).groups(1);
     for url in hrefs:
         roomHtml = requests.get('https://www.douyu.com'+url).text;
-        AllgiftData = re.finditer(r'data-giftid.+?\n.+?\n.+?\n.+?', roomHtml);
+        AllgiftData = re.finditer(r'data-giftid.+?\n.+?\n.+?\n.+?\n.+?', roomHtml);
         for giftData in AllgiftData:
             p = re.compile(r'\n');
             ss = p.split(giftData.group(0).replace(' ', ''));

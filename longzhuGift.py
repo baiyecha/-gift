@@ -17,26 +17,12 @@ def saveFile(fileName, cnt):
 
 allUrl = 'http://configapi.plu.cn/item/getallitems';
 allHtml = requests.get(allUrl).text;
+for array in js.loads(requests.get(allUrl).text):
+    giftJson = {};
+    giftJson["id"] = array["id"];
+    giftJson["name"] = array["title"];
+    giftJson["weight"] = array["costValue"];
+    giftJson["iconUrl"] = array["pngUrl"];
+    AllgiftJson[array["id"]] = giftJson;
 
-AllgiftData = re.finditer(r'preActions":\[\],(.+?),"smallIcon', allHtml);
-for giftData in AllgiftData:
-    print giftData.group(1);
-    p = re.compile(r',');
-    ss = p.split(giftData.group(0));
-    jsonData = {};
-    giftid = '0';
-    for data in ss:
-        print data;
-        p = re.compile(r':');
-        s = p.split(data);
-        print s[0];
-        if s[0] == '' or s[len(s)-1] == '':
-            continue;
-        if s[0] == '"id"':
-            giftid = s[-1];
-        if s[0] == '"id"' or s[0] == '"title"' or s[0] == '"costValue"' :
-            jsonData[s[0]] = s[-1];
-        #print jsonData;
-    AllgiftJson[giftid] = jsonData;
-print AllgiftJson;
 saveFile("longzhu.json", AllgiftJson);
