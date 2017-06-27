@@ -15,6 +15,15 @@ def saveFile(fileName, cnt):
     print json;
     open(fileName, 'wb').write(json);
 
+def modificatJsonKey(jsonObj, nameList):
+    json = {};
+    json["id"] = jsonObj[nameList[0]];
+    json["name"] = jsonObj[nameList[1]];
+    json["weight"] = jsonObj[nameList[2]];
+    json["iconUrl"] = jsonObj[nameList[3]];
+    return  json;
+
+
 allUrl = 'https://www.douyu.com/directory/all';
 allHtml = requests.get(allUrl).text;
 
@@ -39,9 +48,8 @@ for x in xrange(1,int(maxPage[0])):
                     continue;
                 if s[0] == "data-giftid":
                     giftid = s[-1];
-                print s[-1];
                 jsonData[s[0]] = s[-1];
-                print jsonData;
+            jsonData = modificatJsonKey(jsonData, ["data-giftid", "data-giftname", "data-name", "data-gifticon"]);
             AllgiftJson[giftid] = jsonData;
-print AllgiftJson;
+
 saveFile("douyu.json", AllgiftJson);

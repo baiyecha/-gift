@@ -19,7 +19,6 @@ allUrl = 'http://www.quanmin.tv/shouyin_api/public/config/gift/pc?debug&category
 allHtml = requests.get(allUrl).text;
 
 allJson = js.loads(allHtml);
-print allJson["data"]["lists"][0]["cid"];
 for array in allJson["data"]["lists"]:
     giftJson = {};
     giftJson["id"] = array["id"];
