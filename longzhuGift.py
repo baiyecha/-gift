@@ -25,4 +25,4 @@ for array in js.loads(requests.get(allUrl).text):
     giftJson["iconUrl"] = array["pngUrl"];
     AllgiftJson[array["id"]] = giftJson;
 
-saveFile("longzhu.json", AllgiftJson);
+saveFile("longzhuGift.json", AllgiftJson);
