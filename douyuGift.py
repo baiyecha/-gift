@@ -15,15 +15,6 @@ def saveFile(fileName, cnt):
     print json;
     open(fileName, 'wb').write(json);
 
-def modificatJsonKey(jsonObj, nameList):
-    json = {};
-    json["id"] = jsonObj[nameList[0]];
-    json["name"] = jsonObj[nameList[1]];
-    json["weight"] = jsonObj[nameList[2]];
-    json["iconUrl"] = jsonObj[nameList[3]];
-    return  json;
-
-
 allUrl = 'https://www.douyu.com/directory/all';
 allHtml = requests.get(allUrl).text;
 
@@ -35,21 +26,17 @@ for x in xrange(1,int(maxPage[0])):
     hrefs = re.search(r'href="(.*?)"',pageHtml).groups(1);
     for url in hrefs:
         roomHtml = requests.get('https://www.douyu.com'+url).text;
-        AllgiftData = re.finditer(r'data-giftid.+?\n.+?\n.+?\n.+?\n.+?', roomHtml);
-        for giftData in AllgiftData:
-            p = re.compile(r'\n');
-            ss = p.split(giftData.group(0).replace(' ', ''));
-            jsonData = {};
-            giftid = '0';
-            for data in ss:
-                p = re.compile(r'=');
-                s = p.split(data);
-                if s[0] == '' or s[len(s)-1] == '':
-                    continue;
-                if s[0] == "data-giftid":
-                    giftid = s[-1];
-                jsonData[s[0]] = s[-1];
-            jsonData = modificatJsonKey(jsonData, ["data-giftid", "data-giftname", "data-name", "data-gifticon"]);
-            AllgiftJson[giftid] = jsonData;
+        try:
+            AllgiftData =  js.loads(re.search(r'\$ROOM.propBatterConfig = (.+?);', roomHtml).group(1));
+        except AttributeError:
+            continue;
+        for key in AllgiftData:
+            print key ,"\n", AllgiftData[key];
+            giftJson = {};
+            giftJson["id"] = key;
+            giftJson["name"] = AllgiftData[key]["name"];
+            giftJson["weight"] = AllgiftData[key]["pc"];
+            giftJson["iconUrl"] = AllgiftData[key]["small_effect_icon"];
+            AllgiftJson[key] = giftJson;
 
-saveFile("douyu.json", AllgiftJson);
+saveFile("douyuGift.json", AllgiftJson);
